@@ -17,7 +17,8 @@ COPY ["AspNetCoreDockerDemoApp/AspNetCoreDockerDemoApp.csproj", "AspNetCoreDocke
 RUN dotnet restore "./AspNetCoreDockerDemoApp/AspNetCoreDockerDemoApp.csproj"
 COPY . .
 WORKDIR "/src/AspNetCoreDockerDemoApp"
-RUN dotnet build "./AspNetCoreDockerDemoApp.csproj" -c %BUILD_CONFIGURATION% -o /app/build
+RUN dotnet build "./AspNetCoreDockerDemoApp.csproj" -c %BUILD_CONFIGURATION% -o /app/build	
+#RUN dotnet build "AspNetCoreDockerDemoApp.csproj" -c Release -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
@@ -29,3 +30,17 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "AspNetCoreDockerDemoApp.dll"]
+
+
+
+
+#FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+#WORKDIR /src
+#COPY ["AspNetCoreDockerDemoApp.csproj", "."]
+#RUN dotnet restore "./AspNetCoreDockerDemoApp.csproj"
+#COPY . .
+#WORKDIR "/src/."
+#RUN dotnet build "AspNetCoreDockerDemoApp.csproj" -c Release -o /app/build
+
+
+
